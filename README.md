@@ -1,31 +1,21 @@
+# pxt-rtc
 
-> Open this page at [https://hokarimasahiro.github.io/pxt-rtc/](https://hokarimasahiro.github.io/pxt-rtc/)
 
-## Use as Extension
 
-This repository can be added as an **extension** in MakeCode.
+## TODO
 
-* open [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* click on **New Project**
-* click on **Extensions** under the gearwheel menu
-* search for **https://github.com/hokarimasahiro/pxt-rtc** and import
+- [ ] Add a reference for your blocks here
+- [ ] Add "icon.png" image (300x200) in the root folder
+- [ ] Add "- beta" to the GitHub project description if you are still iterating it.
+- [ ] Turn on your automated build on https://travis-ci.org
+- [ ] Use "pxt bump" to create a tagged release on GitHub
+- [ ] On GitHub, create a new file named LICENSE. Select the MIT License template.
+- [ ] Get your package reviewed and approved https://makecode.microbit.org/extensions/approval
 
-## Edit this project ![Build status badge](https://github.com/hokarimasahiro/pxt-rtc/workflows/MakeCode/badge.svg)
+Read more at https://makecode.microbit.org/extensions
 
-To edit this repository in MakeCode.
-
-* open [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* click on **Import** then click on **Import URL**
-* paste **https://github.com/hokarimasahiro/pxt-rtc** and click import
-
-## Blocks preview
-
-This image shows the blocks code from the last commit in master.
-This image may take a few minutes to refresh.
-
-![A rendered view of the blocks](https://github.com/hokarimasahiro/pxt-rtc/raw/master/.github/makecode/blocks.png)
-
-#### Metadata (used for search, rendering)
+## Supported targets
 
 * for PXT/microbit
-<script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
+(The metadata above is needed for package search.)
+
