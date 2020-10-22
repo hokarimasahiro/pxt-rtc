@@ -283,6 +283,9 @@ namespace rtc {
         }
         return retbuf;
     }
+    let wYear:number;
+    let wDays:number;
+    let leapYear:number;
     /**
      * getHour
      */
