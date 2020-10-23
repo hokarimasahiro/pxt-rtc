@@ -416,19 +416,19 @@ namespace rtc {
     //% blockId="getData" block="getData %DateTime %clockData"
 	export function getData (DateTime: number,dt: clockData) {
         switch(dt){
-            case 0:
+            case clockData.year:
                 return getYear(DateTime);
-            case 1:
+            case clockData.month:
                 return getMonth(DateTime);
-            case 2:
+            case clockData.day:
                 return getDay(DateTime);
-            case 3:
+            case clockData.weekday:
                 return getWeekday(DateTime);
-            case 4:
+            case clockData.hour:
                 return getHour(DateTime);
-            case 5:
+            case clockData.minute:
                 return getMinute(DateTime);
-            case 6:
+            case clockData.second:
                 return getSecond(DateTime);
             default:
                 return 0;
@@ -479,4 +479,20 @@ namespace rtc {
 	    }
 	    return ((wDays * 24 + hour) * 60 + minute) * 60 + second
 	}
+    /**
+     * getDatetime
+     */
+    //% blockId="getDatetime" block="getDatetime"
+	export function getDatetime ():number {
+        let cd=getClock();
+        return convDateTime(cd(clockData.year),cd(clockData.month),cd(clockData.day),cd(clockData.hour),cd(clockData.minute),cd(clockData.second))
+    }
+    /**
+     * getDatetime
+     */
+    //* @param DateTime, eg:1234567890
+    //% blockId="getDatetime" block="getDatetime"
+	export function setDatetime (DateTime:number):void {
+        setClock(getYear(DateTime),getMonth(DateTime),getDay(DateTime),getWeekday(DateTime),getHour(DateTime),getMinute(DateTime),getSecond(DateTime));
+    }
 }
