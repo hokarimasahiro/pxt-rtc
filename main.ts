@@ -110,8 +110,8 @@ namespace rtc {
     }
     /**
      * set device
+     * @param devType device type, eg:ds1307
      */
-    //* @param devType device type, eg:ds1307
     //% blockId="setDevice" block="set device %devType"
     //% weight=80 blockGap=8
     export function setDevice(devType: rtcType): number {
@@ -256,16 +256,16 @@ namespace rtc {
 
     /**
      * getClockData
+     * @param clockData, eg:clockData.year
      */
-    //* @param clockData, eg:clockData.year
     //% blockId="getClockData" block="clock %clockData"
     export function getClockData(dt: clockData): clockData {
         return dt;
     }
     /**
      * getClockDevice
+     * @param clockDevice, eg:rtcType.ds3231
      */
-    //* @param clockDevice, eg:rtcType.ds3231
     //% blockId="getClockDevice" block="device %clockData"
     export function getClockDevice(dt: rtcType): rtcType {
         return dt;
@@ -288,24 +288,24 @@ namespace rtc {
     let leapYear:number;
     /**
      * getHour
+     * @param DateTime, eg:1234567890
      */
-    //* @param DateTime, eg:1234567890
     //% blockId="getHour" block="getHour %DateTime"
 	export function getHour (DateTime: number) : number {
 	    return Math.trunc(DateTime / 3600) % 24
 	}
     /**
      * getMinute
+     * @param DateTime, eg:1234567890
      */
-    //* @param DateTime, eg:1234567890
     //% blockId="getMinute" block="getMinute %DateTime"
 	export function getMinute (DateTime: number) : number {
 	    return Math.trunc(DateTime / 60) % 60
 	}
     /**
      * getSecond
+     * @param DateTime, eg:1234567890
      */
-    //* @param DateTime, eg:1234567890
     //% blockId="getSecond" block="getSecond %DateTime"
 	export function getSecond (DateTime: number) : number {
 	    return DateTime % 60
@@ -315,8 +315,8 @@ namespace rtc {
 	}
     /**
      * getYear
+     * @param DateTime, eg:1234567890
      */
-    //* @param DateTime, eg:1234567890
     //% blockId="getYear" block="getYear %DateTime"
 	export function getYear (Datetime: number) : number {
 	    wYear = Math.trunc((getDays(Datetime) + 0.5) / 365.25)
@@ -324,8 +324,8 @@ namespace rtc {
 	}
     /**
      * getMonth
+     * @param DateTime, eg:1234567890
      */
-    //* @param DateTime, eg:1234567890
     //% blockId="getMonth" block="getMonth %DateTime"
 	export function getMonth (Datetime: number) : number {
 	    wYear = getYear(Datetime)
@@ -363,8 +363,8 @@ namespace rtc {
 	}
     /**
      * getDay
+     * @param DateTime, eg:1234567890
      */
-    //* @param DateTime, eg:1234567890
     //% blockId="getDay" block="getDay %DateTime"
 	export function getDay (Datetime: number) : number {
 	    wYear = getYear(Datetime)
@@ -402,17 +402,17 @@ namespace rtc {
 	}
     /**
      * getWeekday
+     * @param DateTime, eg:1234567890
      */
-    //* @param DateTime, eg:1234567890
     //% blockId="getWeekday" block="getWeekday %DateTime"
 	export     function getWeekday (DateTime: number) {
         return (getDays(DateTime) + 4) % 7
     }
     /**
      * getData
+     * @param DateTime, eg:1234567890
+     * @param clockData, eg:clockData.year
      */
-    //* @param DateTime, eg:1234567890
-    //* @param clockData, eg:clockData.year
     //% blockId="getData" block="getData %DateTime %clockData"
 	export function getData (DateTime: number,dt: clockData) {
         switch(dt){
@@ -436,13 +436,13 @@ namespace rtc {
     }
     /**
      * convDateTime
+     * @param year,   eg:2009
+     * @param month,  eg:2
+     * @param day,    eg:13
+     * @param hour,   eg:23
+     * @param minute, eg:31
+     * @param second, eg:30
      */
-    //* @param year,   eg:2009
-    //* @param month,  eg:2
-    //* @param day,    eg:13
-    //* @param hour,   eg:23
-    //* @param minute, eg:31
-    //* @param second, eg:30
     //% blockId="convDateTime" block="convDateTime %year %month %day %hour %minute %second"
 	export function convDateTime (year: number, month: number, day: number, hour: number, minute: number, second: number) : number {
 	    wYear = year - 1970
@@ -488,10 +488,10 @@ namespace rtc {
         return convDateTime(cd(clockData.year),cd(clockData.month),cd(clockData.day),cd(clockData.hour),cd(clockData.minute),cd(clockData.second))
     }
     /**
-     * getDatetime
+     * gsetDatetime
+     * @param DateTime, eg:1234567890
      */
-    //* @param DateTime, eg:1234567890
-    //% blockId="getDatetime" block="getDatetime"
+    //% blockId="setDatetime" block="setDatetime"
 	export function setDatetime (DateTime:number):void {
         setClock(getYear(DateTime),getMonth(DateTime),getDay(DateTime),getWeekday(DateTime),getHour(DateTime),getMinute(DateTime),getSecond(DateTime));
     }
