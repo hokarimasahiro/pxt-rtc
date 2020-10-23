@@ -401,6 +401,14 @@ namespace rtc {
 	    }
 	}
     /**
+     * getWeekday
+     */
+    //* @param DateTime, eg:1234567890
+    //% blockId="getWeekday" block="getWeekday %DateTime"
+	export     function getWeekday (DateTime: number) {
+        return (getDays(DateTime) + 4) % 7
+    }
+    /**
      * convDateTime
      */
     //* @param year,   eg:2009
