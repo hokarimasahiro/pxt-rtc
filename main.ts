@@ -409,6 +409,32 @@ namespace rtc {
         return (getDays(DateTime) + 4) % 7
     }
     /**
+     * getData
+     */
+    //* @param DateTime, eg:1234567890
+    //* @param clockData, eg:clockData.year
+    //% blockId="getData" block="getData %DateTime %clockData"
+	export function getData (DateTime: number,dt: clockData) {
+        switch(dt){
+            case 0:
+                return getYear(DateTime);
+            case 1:
+                return getMonth(DateTime);
+            case 2:
+                return getDay(DateTime);
+            case 3:
+                return getWeekday(DateTime);
+            case 4:
+                return getHour(DateTime);
+            case 5:
+                return getMinute(DateTime);
+            case 6:
+                return getSecond(DateTime);
+            default:
+                return 0;
+        }
+    }
+    /**
      * convDateTime
      */
     //* @param year,   eg:2009
