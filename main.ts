@@ -491,7 +491,7 @@ namespace rtc {
      * gsetDatetime
      * @param DateTime Date & Time, eg:1234567890
      */
-    //% blockId="setDatetime" block="setDatetime"
+    //% blockId="setDatetime" block="setDatetime %DateTime"
 	export function setDatetime (DateTime:number):void {
         setClock(getYear(DateTime),getMonth(DateTime),getDay(DateTime),getWeekday(DateTime),getHour(DateTime),getMinute(DateTime),getSecond(DateTime));
     }
