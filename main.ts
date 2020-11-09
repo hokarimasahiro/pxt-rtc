@@ -174,7 +174,7 @@ namespace rtc {
      * @param minute data of minute, eg: 30
      * @param second data of second, eg: 0
      */
-    //% blockId="setClock" block="set |year %year|month %month|day %day|weekday %weekday|hour %hour|minute %minute|second %second"
+    //% blockId="setClock" block="set clock data|year %year|month %month|day %day|weekday %weekday|hour %hour|minute %minute|second %second"
     //% advanced=true
     export function setClock(year: number, month: number, day: number, weekday: number, hour: number, minute: number, second: number): void {
 
@@ -437,7 +437,7 @@ namespace rtc {
      * @param minute monute of time, eg:31
      * @param second second of time, eg:30
      */
-    //% blockId="convDateTime" block="convDateTime |year %year|month %month|day %day|hour %hour|minute %minute|second %second"
+    //% blockId="convDateTime" block="convDateTime|year %year|month %month|day %day|hour %hour|minute %minute|second %second"
 	export function convDateTime (year: number, month: number, day: number, hour: number, minute: number, second: number) : number {
 	    wYear = year - 1970
 	    if (year % 4 == 0) {
