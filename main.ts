@@ -48,24 +48,6 @@ namespace rtc {
     let REG_SECOND = 0x0
     let weekStart = 0   // 0:0-6 1:1-7
     let REG_SEQ = 0     // 0:SECOND,MINUTE,HOUR,WEEKDAY,DAY,MONTH,YEAR  1:0:SECOND,MINUTE,HOUR,DAY,WEEKDAY,MONTH,YEAR
-    //% shim=rtc::testi2cr
-    function testi2cr(n: number): number {
-        return -1;
-    }
-    //% shim=rtc::testi2cw
-    function testi2cw(n: number): number {
-        return -1;
-    }
-    /**
-      * test read i2c device
-      * @param ad i2c address, eg: 0x32
-      */
-    //% blockId=test_read_i2c_device block="test read i2c device %ad"
-    //% advanced=true
-    export function testReadI2c(ad: number): number {
-        return (testi2cr(ad));
-    }
-
     /**
      * set reg
      */
@@ -147,7 +129,7 @@ namespace rtc {
                 break;
         }
 
-        if (testi2cr(I2C_ADDR) != 0) return -1;
+        if (testi2c.testReadI2c(I2C_ADDR) != 0) return -1;
 
         switch (deviceType) {
             case rtcType.ds1307:
@@ -170,7 +152,7 @@ namespace rtc {
                 break;
         }
 
-        return (testi2cr(I2C_ADDR));
+        return (testi2c.testReadI2c(I2C_ADDR));
     }
     /**
      * set clock array

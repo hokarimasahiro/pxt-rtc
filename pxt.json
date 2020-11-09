@@ -3,13 +3,12 @@
     "version": "0.0.0",
     "description": "",
     "dependencies": {
-        "core": "*"
+        "core": "*",
+        "pxt-testi2c": "github:hokarimasahiro/pxt-testi2c#a3c516b53137e7d47615b5756f3d6d171af0bc1c"
     },
     "files": [
         "README.md",
-        "main.ts",
-        "shims.d.ts",
-        "testi2c.cpp"
+        "main.ts"
     ],
     "testFiles": [
         "test.ts"
