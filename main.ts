@@ -61,6 +61,7 @@ namespace rtc {
       * @param ad i2c address, eg: 0x32
       */
     //% blockId=test_read_i2c_device block="test read i2c device %ad"
+    //% advanced=true
     export function testReadI2c(ad: number): number {
         return (testi2cr(ad));
     }
@@ -100,8 +101,8 @@ namespace rtc {
     /**
      * get device
      */
-    //% blockId="getDevice" block="get device"
-    //% weight=80 blockGap=8
+    //% blockId="getDevice" block="get device"    //% weight=80 blockGap=8
+    //% advanced=true
     export function getDevice(): number {
         for (let i = 0; i < 6; i++) {
             if (setDevice(i) == 0) return i;
@@ -113,7 +114,7 @@ namespace rtc {
      * @param devType device type, eg:ds1307
      */
     //% blockId="setDevice" block="set device %devType"
-    //% weight=80 blockGap=8
+    //% advanced=true
     export function setDevice(devType: rtcType): number {
 
         deviceType = devType;
@@ -176,6 +177,7 @@ namespace rtc {
      * @param tm array of time data
      */
     //% blockId="setClockArray" block="set clock %timeArray"
+    //% advanced=true
     export function setClockArray(tm: number[]): void {
         setClock(tm[0], tm[1], tm[2], tm[3], tm[4], tm[5], tm[6]);
     }
@@ -190,8 +192,8 @@ namespace rtc {
      * @param minute data of minute, eg: 30
      * @param second data of second, eg: 0
      */
-    //% weight=70 blockGap=8
     //% blockId="setClock" block="set year %year|month %month|day %day|weekday %weekday|hour %hour|minute %minute|second %second"
+    //% advanced=true
     export function setClock(year: number, month: number, day: number, weekday: number, hour: number, minute: number, second: number): void {
 
         let buf = pins.createBuffer(8);
@@ -224,7 +226,7 @@ namespace rtc {
      * get clock
      */
     //% blockId="getClock" block="get clock"
-    //% weight=68 blockGap=8
+    //% advanced=true
     export function getClock(): number[] {
         let retbuf = [0, 0, 0, 0, 0, 0, 0];
         let offset: number;
@@ -267,6 +269,7 @@ namespace rtc {
      * @param dt rtcType, eg:rtcType.ds3231
      */
     //% blockId="getClockDevice" block="device %clockData"
+    //% advanced=true
     export function getClockDevice(dt: rtcType): rtcType {
         return dt;
     }
@@ -274,7 +277,7 @@ namespace rtc {
      * get RTC RAW DATA
      */
     //% blockId="getRawData" block="get RTC RAW data"
-    //% weight=46 blockGap=8
+    //% advanced=true
     export function getRawData(): number[] {
         let retbuf = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         let buf = pins.i2cReadBuffer(I2C_ADDR, 16);
