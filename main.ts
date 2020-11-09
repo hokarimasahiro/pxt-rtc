@@ -261,6 +261,7 @@ namespace rtc {
      * @param dt clockData, eg:clockData.year
      */
     //% blockId="getClockData" block="clock %clockData"
+    //% advanced=true
     export function getClockData(dt: clockData): clockData {
         return dt;
     }
@@ -278,6 +279,7 @@ namespace rtc {
      */
     //% blockId="getRawData" block="get RTC RAW data"
     //% advanced=true
+    //% advanced=true
     export function getRawData(): number[] {
         let retbuf = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         let buf = pins.i2cReadBuffer(I2C_ADDR, 16);
@@ -294,6 +296,7 @@ namespace rtc {
      * @param DateTime Date & Time, eg:1234567890
      */
     //% blockId="getHour" block="getHour %DateTime"
+    //% advanced=true
 	export function getHour (DateTime: number) : number {
 	    return Math.trunc(DateTime / 3600) % 24
 	}
@@ -302,6 +305,7 @@ namespace rtc {
      * @param DateTime Date & Time, eg:1234567890
      */
     //% blockId="getMinute" block="getMinute %DateTime"
+    //% advanced=true
 	export function getMinute (DateTime: number) : number {
 	    return Math.trunc(DateTime / 60) % 60
 	}
@@ -309,6 +313,7 @@ namespace rtc {
      * getSecond
      * @param DateTime Date & Time, eg:1234567890
      */
+    //% advanced=true
     //% blockId="getSecond" block="getSecond %DateTime"
 	export function getSecond (DateTime: number) : number {
 	    return DateTime % 60
@@ -321,6 +326,7 @@ namespace rtc {
      * @param DateTime Date & Time, eg:1234567890
      */
     //% blockId="getYear" block="getYear %DateTime"
+    //% advanced=true
 	export function getYear (Datetime: number) : number {
 	    wYear = Math.trunc((getDays(Datetime) + 0.5) / 365.25)
 	    return wYear + 1970
@@ -330,6 +336,7 @@ namespace rtc {
      * @param DateTime Date & Time, eg:1234567890
      */
     //% blockId="getMonth" block="getMonth %DateTime"
+    //% advanced=true
 	export function getMonth (Datetime: number) : number {
 	    wYear = getYear(Datetime)
 	    wDays = getDays(Datetime) - ((wYear - 1970) * 365 + Math.ceil((wYear - 1972) / 4))
@@ -369,6 +376,7 @@ namespace rtc {
      * @param DateTime Date & Time, eg:1234567890
      */
     //% blockId="getDay" block="getDay %DateTime"
+    //% advanced=true
 	export function getDay (Datetime: number) : number {
 	    wYear = getYear(Datetime)
 	    wDays = getDays(Datetime) - ((wYear - 1970) * 365 + Math.ceil((wYear - 1972) / 4))
@@ -408,6 +416,7 @@ namespace rtc {
      * @param DateTime Date & Time, eg:1234567890
      */
     //% blockId="getWeekday" block="getWeekday %DateTime"
+    //% advanced=true
 	export     function getWeekday (DateTime: number) {
         return (getDays(DateTime) + 4) % 7
     }
