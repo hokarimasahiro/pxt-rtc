@@ -479,7 +479,7 @@ namespace rtc {
     //% blockId="getDatetime" block="getDatetime"
 	export function getDatetime ():number {
         let cd=getClock();
-        return convDateTime(cd(clockData.year),cd(clockData.month),cd(clockData.day),cd(clockData.hour),cd(clockData.minute),cd(clockData.second))
+        return convDateTime(cd[clockData.year],cd[clockData.month],cd[clockData.day],cd[clockData.hour],cd[clockData.minute],cd[clockData.second])
     }
     /**
      * gsetDatetime
