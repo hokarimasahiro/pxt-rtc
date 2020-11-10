@@ -192,7 +192,7 @@ namespace rtc {
             buf[5] = DecToHex(weekday + weekStart);
         }
         buf[6] = DecToHex(month);
-        buf[7] = DecToHex(year);
+        buf[7] = DecToHex(year % 100);
         if (deviceType == rtcType.rx8035) {
             buf[0] = REG_SECOND << 4 | 0;
             buf[3] = buf[3] | 0x80;   // 24H bit
