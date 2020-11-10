@@ -399,7 +399,7 @@ namespace rtc {
      */
     //% blockId="getWeekday" block="getWeekday %DateTime"
     //% advanced=true
-	export     function getWeekday (DateTime: number) {
+	export     function getWeekday (DateTime: number) :number{
         return (getDays(DateTime) + 4) % 7
     }
     /**
