@@ -408,7 +408,7 @@ namespace rtc {
      * @param dt clockData, eg:clockData.year
      */
     //% blockId="getData" block="getData %DateTime %clockData"
-	export function getData (DateTime: number,dt: clockData) {
+	export function getData (DateTime: number,dt: clockData):number {
         switch(dt){
             case clockData.year:
                 return getYear(DateTime);
