@@ -43,8 +43,8 @@ enum clockData {
 namespace rtc {
 
     let deviceType = 0;   // DS3231
-    let I2C_ADDR = 0x32
-    let REG_CTRL = 0x68
+    let I2C_ADDR = 0x68
+    let REG_CTRL = 0x0e
     let REG_SECOND = 0x0
     let weekStart = 1   // 0:0-6 1:1-7
     let REG_SEQ = 0     // 0:SECOND,MINUTE,HOUR,WEEKDAY,DAY,MONTH,YEAR  1:0:SECOND,MINUTE,HOUR,DAY,WEEKDAY,MONTH,YEAR
@@ -94,7 +94,7 @@ namespace rtc {
      */
     //% blockId="setDevice" block="set device %devType"
     //% advanced=true
-    export function setDevice(devType: rtcType): number {
+    export function setDevice(devType: rtcType): void {
 
         deviceType = devType;
 
@@ -148,7 +148,6 @@ namespace rtc {
             default:
                 break;
         }
-        return 0;
 //        return (testi2c.testReadI2c(I2C_ADDR));
     }
     /**
