@@ -90,7 +90,7 @@ namespace rtc {
     }
     /**
      * set device
-     * @param devType device type, eg:ds1307
+     * @param devType device type, eg:rtcType.ds1307
      */
     //% blockId="setDevice" block="set device %devType"
     //% advanced=true
