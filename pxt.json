@@ -4,7 +4,7 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "pxt-testi2c": "github:hokarimasahiro/pxt-testi2c#026b35e4c81b77167e7d124396d2bdf239f3e47e"
+        "microphone": "*"
     },
     "files": [
         "README.md",

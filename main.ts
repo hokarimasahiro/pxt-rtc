@@ -42,11 +42,11 @@ enum clockData {
 //% weight=10 color=#800080 icon="\uf017" block="RTC"
 namespace rtc {
 
-    let deviceType = 6;   // RX8085
+    let deviceType = 0;   // DS3231
     let I2C_ADDR = 0x32
-    let REG_CTRL = 0x0f
+    let REG_CTRL = 0x68
     let REG_SECOND = 0x0
-    let weekStart = 0   // 0:0-6 1:1-7
+    let weekStart = 1   // 0:0-6 1:1-7
     let REG_SEQ = 0     // 0:SECOND,MINUTE,HOUR,WEEKDAY,DAY,MONTH,YEAR  1:0:SECOND,MINUTE,HOUR,DAY,WEEKDAY,MONTH,YEAR
     /**
      * set reg
@@ -86,10 +86,7 @@ namespace rtc {
     //% blockId="getDevice" block="get device"    //% weight=80 blockGap=8
     //% advanced=true
     export function getDevice(): number {
-        for (let i = 0; i < 6; i++) {
-            if (setDevice(i) == 0) return i;
-        }
-        return -1;
+        return deviceType;
     }
     /**
      * set device
@@ -129,7 +126,7 @@ namespace rtc {
                 break;
         }
 
-        if (testi2c.testReadI2c(I2C_ADDR) != 0) return -1;
+//        if (testi2c.testReadI2c(I2C_ADDR) != 0) return -1;
 
         switch (deviceType) {
             case rtcType.ds1307:
@@ -151,8 +148,8 @@ namespace rtc {
             default:
                 break;
         }
-
-        return (testi2c.testReadI2c(I2C_ADDR));
+        return 0;
+//        return (testi2c.testReadI2c(I2C_ADDR));
     }
     /**
      * set clock array
