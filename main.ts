@@ -400,8 +400,8 @@ namespace rtc {
     }
     /**
      * getData
-     * @param DateTime Date & Time, eg:1234567890
      * @param dt clockData, eg:clockData.year
+     * @param DateTime Date & Time, eg:1234567890
      */
     //% blockId="getData" block="getData %dt of %DateTime "
 	export function getData (DateTime: number,dt: clockData):number {
