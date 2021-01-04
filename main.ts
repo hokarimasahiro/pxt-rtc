@@ -90,6 +90,7 @@ namespace rtc {
 
         if (deviceType==rtcType.NON){
             for(deviceType=0;deviceType<=6;deviceType++){
+                setDevice(deviceType)
                 buf=getClock();
                 for(let i=0;i<7;i++){
                     if(buf[i]!=0) return deviceType;
