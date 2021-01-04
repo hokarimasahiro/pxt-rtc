@@ -93,7 +93,7 @@ namespace rtc {
                 setDevice(deviceType)
                 buf=getClock();
                 for(let i=0;i<7;i++){
-                    if(buf[i]!=0) return deviceType;
+                    if(buf[i]>0) return deviceType;
                 }
             }
         }else return deviceType;
