@@ -1,7 +1,6 @@
-let buf=[0,0,0,0,0,0,0];
 for(let dev=0;dev<7;dev++){
     rtc.setDevice(dev)
-    buf=rtc.getClock()
-    basic.showString(convertToText(dev) + ":" + convertToText(buf[0]) + "," + convertToText(buf[1]) + "," + convertToText(buf[2]) + "," + convertToText(buf[3]) + "," + convertToText(buf[4]) + "," + convertToText(buf[5]) + "," + convertToText(buf[6]));
+    rtc.getClock()
+    basic.showString(convertToText(dev) + ":" + rtc.getClockData(0) + "," + rtc.getClockData(1) + "," + rtc.getClockData(2) + "," + rtc.getClockData(3) + "," + rtc.getClockData(4) + "," + rtc.getClockData(5) + "," + rtc.getClockData(5));
     basic.pause(1000)
 }

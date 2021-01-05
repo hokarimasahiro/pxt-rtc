@@ -48,6 +48,8 @@ namespace rtc {
     let REG_SECOND = 0x0
     let weekStart = 1   // 0:0-6 1:1-7
     let REG_SEQ = 0     // 0:SECOND,MINUTE,HOUR,WEEKDAY,DAY,MONTH,YEAR  1:0:SECOND,MINUTE,HOUR,DAY,WEEKDAY,MONTH,YEAR
+    let dateTime=[0,0,0,0,0,0,0];     // year,month,day,weekday,hour,minute,second
+    let unixTime=0;     // Unix time
     /**
      * set reg
      */
@@ -86,14 +88,13 @@ namespace rtc {
     //% blockId="getDevice" block="get device"    //% weight=80 blockGap=8
     //% advanced=true
     export function getDevice(): number {
-        let buf=[0,0,0,0,0,0,0];
 
         if (deviceType==rtcType.NON){
             for(deviceType=0;deviceType<=6;deviceType++){
                 setDevice(deviceType)
-                buf=getClock();
+                getClock();
                 for(let i=0;i<7;i++){
-                    if(buf[i]>0) return deviceType;
+                    if(dateTime[i]>0) return deviceType;
                 }
             }
         }else return deviceType;
@@ -138,8 +139,6 @@ namespace rtc {
                 break;
         }
 
-//        if (testi2c.testReadI2c(I2C_ADDR) != 0) return -1;
-
         switch (deviceType) {
             case rtcType.ds1307:
                 break;
@@ -160,16 +159,6 @@ namespace rtc {
             default:
                 break;
         }
-//        return (testi2c.testReadI2c(I2C_ADDR));
-    }
-    /**
-     * set clock array
-     * @param tm array of time data
-     */
-    //% blockId="setClockArray" block="set clock %timeArray"
-    //% advanced=true
-    export function setClockArray(tm: number[]): void {
-        setClock(tm[0], tm[1], tm[2], tm[3], tm[4], tm[5], tm[6]);
     }
 
     /**
@@ -184,7 +173,7 @@ namespace rtc {
      */
     //% blockId="setClock" block="set clock data|year %year|month %month|day %day|weekday %weekday|hour %hour|minute %minute|second %second"
     //% advanced=true
-    export function setClock(year: number, month: number, day: number, weekday: number, hour: number, minute: number, second: number): void {
+    function setClock(year: number, month: number, day: number, weekday: number, hour: number, minute: number, second: number): void {
 
         let buf = pins.createBuffer(8);
 
@@ -217,7 +206,7 @@ namespace rtc {
      */
     //% blockId="getClock" block="get clock"
     //% advanced=true
-    export function getClock(): number[] {
+    export function getClock(): void {
         let retbuf = [0, 0, 0, 0, 0, 0, 0];
         let offset: number;
 
@@ -231,29 +220,29 @@ namespace rtc {
         }
         let buf = getRawData();
 
-        retbuf[0] = HexToDec(buf[6 + offset])            // year
-        retbuf[1] = HexToDec(buf[5 + offset] & 0x1f)    // month
+        dateTime[0] = HexToDec(buf[6 + offset])            // year
+        dateTime[1] = HexToDec(buf[5 + offset] & 0x1f)    // month
         if (REG_SEQ == 0) {
-            retbuf[2] = HexToDec(buf[4 + offset] & 0x3f)      // day
-            retbuf[3] = HexToDec(buf[3 + offset] & 0x07) - weekStart;
+            dateTime[2] = HexToDec(buf[4 + offset] & 0x3f)      // day
+            dateTime[3] = HexToDec(buf[3 + offset] & 0x07) - weekStart;
         } else {
-            retbuf[2] = HexToDec(buf[3 + offset] & 0x3f)      // day
-            retbuf[3] = HexToDec(buf[4 + offset] & 0x07) - weekStart;
+            dateTime[2] = HexToDec(buf[3 + offset] & 0x3f)      // day
+            dateTime[3] = HexToDec(buf[4 + offset] & 0x07) - weekStart;
         }
-        retbuf[4] = HexToDec(buf[2 + offset] & 0x3f)     // hour
-        retbuf[5] = HexToDec(buf[1 + offset] & 0x7f)   // minute
-        retbuf[6] = HexToDec(buf[0 + offset] & 0x7f)   // second
-        return retbuf;
+        dateTime[4] = HexToDec(buf[2 + offset] & 0x3f)     // hour
+        dateTime[5] = HexToDec(buf[1 + offset] & 0x7f)   // minute
+        dateTime[6] = HexToDec(buf[0 + offset] & 0x7f)   // second
+        unixTime = convDateTime(dateTime[0], dateTime[1], dateTime[2], dateTime[4], dateTime[5], dateTime[6]);
     }
 
     /**
      * getClockData
      * @param dt clockData, eg:clockData.year
      */
-    //% blockId="getClockData" block="clock %clockData"
+    //% blockId="getClockData" block="%clockData"
     //% advanced=true
-    export function getClockData(dt: clockData): clockData {
-        return dt;
+    export function getClockData(dt: clockData): number {
+        return dateTime[dt];
     }
     /**
      * getClockDevice
@@ -268,7 +257,6 @@ namespace rtc {
      * get RTC RAW DATA
      */
     //% blockId="getRawData" block="get RTC RAW data"
-    //% advanced=true
     //% advanced=true
     export function getRawData(): number[] {
         let retbuf = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -287,7 +275,7 @@ namespace rtc {
      */
     //% blockId="getHour" block="getHour %DateTime"
     //% advanced=true
-	export function getHour (DateTime: number) : number {
+	function getHour (DateTime: number) : number {
 	    return Math.trunc(DateTime / 3600) % 24
 	}
     /**
@@ -296,7 +284,7 @@ namespace rtc {
      */
     //% blockId="getMinute" block="getMinute %DateTime"
     //% advanced=true
-	export function getMinute (DateTime: number) : number {
+	function getMinute (DateTime: number) : number {
 	    return Math.trunc(DateTime / 60) % 60
 	}
     /**
@@ -305,7 +293,7 @@ namespace rtc {
      */
     //% advanced=true
     //% blockId="getSecond" block="getSecond %DateTime"
-	export function getSecond (DateTime: number) : number {
+	function getSecond (DateTime: number) : number {
 	    return DateTime % 60
 	}
 	function getDays (DateTime: number) : number {
@@ -317,7 +305,7 @@ namespace rtc {
      */
     //% blockId="getYear" block="getYear %DateTime"
     //% advanced=true
-	export function getYear (Datetime: number) : number {
+	function getYear (Datetime: number) : number {
 	    wYear = Math.trunc((getDays(Datetime) + 0.5) / 365.25)
 	    return wYear + 1970
 	}
@@ -327,7 +315,7 @@ namespace rtc {
      */
     //% blockId="getMonth" block="getMonth %DateTime"
     //% advanced=true
-	export function getMonth (Datetime: number) : number {
+	function getMonth (Datetime: number) : number {
 	    wYear = getYear(Datetime)
 	    wDays = getDays(Datetime) - ((wYear - 1970) * 365 + Math.ceil((wYear - 1972) / 4))
 	    if (wYear % 4 == 0) {
@@ -367,7 +355,7 @@ namespace rtc {
      */
     //% blockId="getDay" block="getDay %DateTime"
     //% advanced=true
-	export function getDay (Datetime: number) : number {
+	function getDay (Datetime: number) : number {
 	    wYear = getYear(Datetime)
 	    wDays = getDays(Datetime) - ((wYear - 1970) * 365 + Math.ceil((wYear - 1972) / 4))
 	    if (wYear % 4 == 0) {
@@ -407,7 +395,7 @@ namespace rtc {
      */
     //% blockId="getWeekday" block="getWeekday %DateTime"
     //% advanced=true
-	export     function getWeekday (DateTime: number) :number{
+	function getWeekday (DateTime: number) :number{
         return (getDays(DateTime) + 4) % 7
     }
     /**
@@ -416,6 +404,7 @@ namespace rtc {
      * @param dt clockData, eg:clockData.year
      */
     //% blockId="getData" block="getData %DateTime of %dt"
+    //% advanced=true
 	export function getData (DateTime: number,dt: clockData):number {
         switch(dt){
             case clockData.year:
@@ -486,13 +475,13 @@ namespace rtc {
      */
     //% blockId="getDatetime" block="getDatetime"
 	export function getDatetime ():number {
-        let cd=getClock();
-        if(cd[clockData.year]<70){
-            return convDateTime(cd[clockData.year]+2000,cd[clockData.month],cd[clockData.day],cd[clockData.hour],cd[clockData.minute],cd[clockData.second])
-        } else if(cd[clockData.year]<100){
-            return convDateTime(cd[clockData.year]+1900,cd[clockData.month],cd[clockData.day],cd[clockData.hour],cd[clockData.minute],cd[clockData.second])
+        getClock();
+        if(dateTime[0]<70){
+            return convDateTime(dateTime[0]+2000,dateTime[1],dateTime[2],dateTime[4],dateTime[5],dateTime[6])
+        } else if(dateTime[0]<100){
+            return convDateTime(dateTime[0]+1900,dateTime[1],dateTime[2],dateTime[4],dateTime[5],dateTime[6])
         } else {
-            return convDateTime(cd[clockData.year],cd[clockData.month],cd[clockData.day],cd[clockData.hour],cd[clockData.minute],cd[clockData.second])
+            return convDateTime(dateTime[0],dateTime[1],dateTime[2],dateTime[4],dateTime[5],dateTime[6])
         }
     }
     /**
