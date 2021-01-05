@@ -235,7 +235,7 @@ namespace rtc {
 
     /**
      * getClockData
-     * @param dt clockData, eg:clockData.year
+     * @param dt clockData, eg:clockData.hour
      */
     //% blockId="getClockData" block="%clockData"
     export function getClockData(dt: clockData): number {
@@ -431,7 +431,7 @@ namespace rtc {
      * @param minute monute of time, eg:31
      * @param second second of time, eg:30
      */
-    //% blockId="convDateTime" block="convDateTime year %year month %month day %day hour %hour minute %minute second %second"
+    //% blockId="convDateTime" block="convDateTime|year %year|month %month|day %day|hour %hour|minute %minute|second %second"
     //% advanced=true
 	export function convDateTime (year: number, month: number, day: number, hour: number, minute: number, second: number) : number {
 	    wYear = year - 1970
