@@ -50,6 +50,8 @@ namespace rtc {
     let REG_SEQ = 0     // 0:SECOND,MINUTE,HOUR,WEEKDAY,DAY,MONTH,YEAR  1:0:SECOND,MINUTE,HOUR,DAY,WEEKDAY,MONTH,YEAR
     let dateTime=[0,0,0,0,0,0,0];     // year,month,day,weekday,hour,minute,second
     let unixTime=0;     // Unix time
+    let startTime=0;
+    let orgTime=0;
     /**
      * set reg
      */
@@ -98,6 +100,7 @@ namespace rtc {
                 }
             }
         }else return deviceType;
+        startTime = Math.trunc(input.runningTime() / 1000);
         deviceType= rtcType.NON;
         return deviceType;
     }
@@ -174,31 +177,44 @@ namespace rtc {
     //% blockId="setClock" block="set clock data|year %year|month %month|day %day|weekday %weekday|hour %hour|minute %minute|second %second"
     export function setClock(year: number, month: number, day: number, weekday: number, hour: number, minute: number, second: number): void {
 
-        let buf = pins.createBuffer(8);
+        dateTime[0]=year;
+        dateTime[1]=month;
+        dateTime[2]=day;
+        dateTime[3]=weekday;
+        dateTime[4]=hour;
+        dateTime[5]=minute;
+        dateTime[6]=second;
 
-        buf[0] = REG_SECOND;
-        buf[1] = DecToHex(second);
-        buf[2] = DecToHex(minute);
-        buf[3] = DecToHex(hour);
-        if (REG_SEQ == 0) {
-            buf[4] = DecToHex(weekday + weekStart);
-            buf[5] = DecToHex(day);
-        } else {
-            buf[4] = DecToHex(day);
-            buf[5] = DecToHex(weekday + weekStart);
-        }
-        buf[6] = DecToHex(month);
-        buf[7] = DecToHex(year % 100);
-        if (deviceType == rtcType.rx8035) {
-            buf[0] = REG_SECOND << 4 | 0;
-            buf[3] = buf[3] | 0x80;   // 24H bit
-        }
-        if (deviceType == rtcType.mcp79410) {
-            buf[1] = buf[1] | 0x80;       // Start Clock
-            buf[4] = buf[4] | 0x08;     // Vbat Enable
-        }
+        if (deviceType != rtcType.NON){
+            let buf = pins.createBuffer(8);
 
-        pins.i2cWriteBuffer(I2C_ADDR, buf)
+            buf[0] = REG_SECOND;
+            buf[1] = DecToHex(second);
+            buf[2] = DecToHex(minute);
+            buf[3] = DecToHex(hour);
+            if (REG_SEQ == 0) {
+                buf[4] = DecToHex(weekday + weekStart);
+                buf[5] = DecToHex(day);
+            } else {
+                buf[4] = DecToHex(day);
+                buf[5] = DecToHex(weekday + weekStart);
+            }
+            buf[6] = DecToHex(month);
+            buf[7] = DecToHex(year % 100);
+            if (deviceType == rtcType.rx8035) {
+                buf[0] = REG_SECOND << 4 | 0;
+                buf[3] = buf[3] | 0x80;   // 24H bit
+            }
+            if (deviceType == rtcType.mcp79410) {
+                buf[1] = buf[1] | 0x80;       // Start Clock
+                buf[4] = buf[4] | 0x08;     // Vbat Enable
+            }
+
+            pins.i2cWriteBuffer(I2C_ADDR, buf)
+        } else{
+            orgTime = convDateTime(dateTime[0], dateTime[1], dateTime[2], dateTime[4], dateTime[5], dateTime[6]);
+            unixTime = orgTime;
+        }
     }
     /**
      * get clock
@@ -208,29 +224,43 @@ namespace rtc {
         let retbuf = [0, 0, 0, 0, 0, 0, 0];
         let offset: number;
 
-        if (deviceType == rtcType.rx8035) offset = 1; else offset = 0;
-
         switch (deviceType) {
+            case rtcType.NON:
+                break;
             case rtcType.rx8035:
+                offset = 1;
                 break;
             default:
+                offset = 0;
                 pins.i2cWriteNumber(I2C_ADDR, REG_SECOND, NumberFormat.UInt8BE);
         }
-        let buf = getRawData();
+        if (deviceType != rtcType.NON){
+            let buf = getRawData();
 
-        dateTime[0] = HexToDec(buf[6 + offset])            // year
-        dateTime[1] = HexToDec(buf[5 + offset] & 0x1f)    // month
-        if (REG_SEQ == 0) {
-            dateTime[2] = HexToDec(buf[4 + offset] & 0x3f)      // day
-            dateTime[3] = HexToDec(buf[3 + offset] & 0x07) - weekStart;
-        } else {
-            dateTime[2] = HexToDec(buf[3 + offset] & 0x3f)      // day
-            dateTime[3] = HexToDec(buf[4 + offset] & 0x07) - weekStart;
+            dateTime[0] = HexToDec(buf[6 + offset])            // year
+            dateTime[1] = HexToDec(buf[5 + offset] & 0x1f)    // month
+            if (REG_SEQ == 0) {
+                dateTime[2] = HexToDec(buf[4 + offset] & 0x3f)      // day
+                dateTime[3] = HexToDec(buf[3 + offset] & 0x07) - weekStart;
+            } else {
+                dateTime[2] = HexToDec(buf[3 + offset] & 0x3f)      // day
+                dateTime[3] = HexToDec(buf[4 + offset] & 0x07) - weekStart;
+            }
+            dateTime[4] = HexToDec(buf[2 + offset] & 0x3f)     // hour
+            dateTime[5] = HexToDec(buf[1 + offset] & 0x7f)   // minute
+            dateTime[6] = HexToDec(buf[0 + offset] & 0x7f)   // second
+
+            unixTime = convDateTime(dateTime[0], dateTime[1], dateTime[2], dateTime[4], dateTime[5], dateTime[6]);
+        } else{
+            unixTime = orgTime + (Math.trunc(input.runningTime() / 1000)) - startTime;
+            dateTime[0] = getYear(unixTime);
+            dateTime[1] = getMonth(unixTime);
+            dateTime[2] = getDay(unixTime);
+            dateTime[3] = getWeekday(unixTime);
+            dateTime[4] = getHour(unixTime);
+            dateTime[5] = getMinute(unixTime);
+            dateTime[6] = getSecond(unixTime);
         }
-        dateTime[4] = HexToDec(buf[2 + offset] & 0x3f)     // hour
-        dateTime[5] = HexToDec(buf[1 + offset] & 0x7f)   // minute
-        dateTime[6] = HexToDec(buf[0 + offset] & 0x7f)   // second
-        unixTime = convDateTime(dateTime[0], dateTime[1], dateTime[2], dateTime[4], dateTime[5], dateTime[6]);
     }
 
     /**
