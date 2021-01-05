@@ -100,6 +100,7 @@ namespace rtc {
                 }
             }
         }else return deviceType;
+
         startTime = Math.trunc(input.runningTime() / 1000);
         deviceType= rtcType.NON;
         return deviceType;
@@ -185,6 +186,8 @@ namespace rtc {
         dateTime[5]=minute;
         dateTime[6]=second;
 
+        getDevice();
+    
         if (deviceType != rtcType.NON){
             let buf = pins.createBuffer(8);
 
@@ -224,6 +227,8 @@ namespace rtc {
         let retbuf = [0, 0, 0, 0, 0, 0, 0];
         let offset: number;
 
+        getDevice();
+        
         switch (deviceType) {
             case rtcType.NON:
                 break;
