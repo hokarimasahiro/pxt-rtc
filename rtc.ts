@@ -172,7 +172,6 @@ namespace rtc {
      * @param second data of second, eg: 0
      */
     //% blockId="setClock" block="set clock data|year %year|month %month|day %day|weekday %weekday|hour %hour|minute %minute|second %second"
-    //% advanced=true
     export function setClock(year: number, month: number, day: number, weekday: number, hour: number, minute: number, second: number): void {
 
         let buf = pins.createBuffer(8);
@@ -205,7 +204,6 @@ namespace rtc {
      * get clock
      */
     //% blockId="getClock" block="get clock"
-    //% advanced=true
     export function getClock(): void {
         let retbuf = [0, 0, 0, 0, 0, 0, 0];
         let offset: number;
@@ -240,7 +238,6 @@ namespace rtc {
      * @param dt clockData, eg:clockData.year
      */
     //% blockId="getClockData" block="%clockData"
-    //% advanced=true
     export function getClockData(dt: clockData): number {
         return dateTime[dt];
     }
@@ -435,6 +432,7 @@ namespace rtc {
      * @param second second of time, eg:30
      */
     //% blockId="convDateTime" block="convDateTime year %year month %month day %day hour %hour minute %minute second %second"
+    //% advanced=true
 	export function convDateTime (year: number, month: number, day: number, hour: number, minute: number, second: number) : number {
 	    wYear = year - 1970
 	    if (year % 4 == 0) {
@@ -474,6 +472,7 @@ namespace rtc {
      * getDatetime
      */
     //% blockId="getDatetime" block="getDatetime"
+    //% advanced=true
 	export function getDatetime ():number {
         getClock();
         if(dateTime[0]<70){
@@ -489,6 +488,7 @@ namespace rtc {
      * @param DateTime Date & Time, eg:1234567890
      */
     //% blockId="setDatetime" block="setDatetime %DateTime"
+    //% advanced=true
 	export function setDatetime (DateTime:number):void {
         setClock(getYear(DateTime),getMonth(DateTime),getDay(DateTime),getWeekday(DateTime),getHour(DateTime),getMinute(DateTime),getSecond(DateTime));
     }
