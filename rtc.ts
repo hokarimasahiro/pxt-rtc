@@ -173,7 +173,7 @@ namespace rtc {
      */
     //% blockId="setClock" block="set clock data|year %year|month %month|day %day|weekday %weekday|hour %hour|minute %minute|second %second"
     //% advanced=true
-    function setClock(year: number, month: number, day: number, weekday: number, hour: number, minute: number, second: number): void {
+    export function setClock(year: number, month: number, day: number, weekday: number, hour: number, minute: number, second: number): void {
 
         let buf = pins.createBuffer(8);
 
