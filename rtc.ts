@@ -255,7 +255,7 @@ namespace rtc {
 
     /**
      * getClockData
-     * @param dt clockData, eg:clockData.hour
+     * @param dt clockData
      * @param n data, eg:8
      */
     //% blockId="setClockData" block="set %clockData to %n"
@@ -265,7 +265,7 @@ namespace rtc {
 
     /**
      * getClockData
-     * @param dt clockData, eg:clockData.hour
+     * @param dt clockData
      */
     //% blockId="getClockData" block="%clockData"
     export function getClockData(dt: clockData): number {
