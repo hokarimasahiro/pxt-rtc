@@ -167,24 +167,9 @@ namespace rtc {
 
     /**
      * set clock
-     * @param year data of year, eg: 2019
-     * @param month data of month, eg: 3
-     * @param day data of day, eg: 14
-     * @param weekday data of weekday, eg: 4
-     * @param hour data of hour, eg: 5
-     * @param minute data of minute, eg: 30
-     * @param second data of second, eg: 0
      */
-    //% blockId="setClock" block="set clock data|year %year|month %month|day %day|weekday %weekday|hour %hour|minute %minute|second %second"
-    export function setClock(year: number, month: number, day: number, weekday: number, hour: number, minute: number, second: number): void {
-
-        dateTime[0]=year;
-        dateTime[1]=month;
-        dateTime[2]=day;
-        dateTime[3]=weekday;
-        dateTime[4]=hour;
-        dateTime[5]=minute;
-        dateTime[6]=second;
+    //% blockId="setClock" block="set clock"
+    export function setClock(): void {
 
         getDevice();
     
@@ -192,18 +177,18 @@ namespace rtc {
             let buf = pins.createBuffer(8);
 
             buf[0] = REG_SECOND;
-            buf[1] = DecToHex(second);
-            buf[2] = DecToHex(minute);
-            buf[3] = DecToHex(hour);
+            buf[1] = DecToHex(dateTime[6]);
+            buf[2] = DecToHex(dateTime[5]);
+            buf[3] = DecToHex(dateTime[4]);
             if (REG_SEQ == 0) {
-                buf[4] = DecToHex(weekday + weekStart);
-                buf[5] = DecToHex(day);
+                buf[4] = DecToHex(dateTime[3] + weekStart);
+                buf[5] = DecToHex(dateTime[2]);
             } else {
-                buf[4] = DecToHex(day);
-                buf[5] = DecToHex(weekday + weekStart);
+                buf[4] = DecToHex(dateTime[2]);
+                buf[5] = DecToHex(dateTime[3] + weekStart);
             }
-            buf[6] = DecToHex(month);
-            buf[7] = DecToHex(year % 100);
+            buf[6] = DecToHex(dateTime[1]);
+            buf[7] = DecToHex(dateTime[0] % 100);
             if (deviceType == rtcType.rx8035) {
                 buf[0] = REG_SECOND << 4 | 0;
                 buf[3] = buf[3] | 0x80;   // 24H bit
@@ -266,6 +251,16 @@ namespace rtc {
             dateTime[5] = getMinute(unixTime);
             dateTime[6] = getSecond(unixTime);
         }
+    }
+
+    /**
+     * getClockData
+     * @param dt clockData, eg:clockData.hour
+     * @param n data, eg:8
+     */
+    //% blockId="setClockData" block="%clockData|%n"
+    export function setClockData(dt: clockData,n:number): void {
+        dateTime[dt]=n;
     }
 
     /**
@@ -525,6 +520,13 @@ namespace rtc {
     //% blockId="setDatetime" block="setDatetime %DateTime"
     //% advanced=true
 	export function setDatetime (DateTime:number):void {
-        setClock(getYear(DateTime),getMonth(DateTime),getDay(DateTime),getWeekday(DateTime),getHour(DateTime),getMinute(DateTime),getSecond(DateTime));
+        dateTime[0]=getYear(DateTime);
+        dateTime[1]=getMonth(DateTime);
+        dateTime[2]=getDay(DateTime);
+        dateTime[3]=getWeekday(DateTime);
+        dateTime[4]=getHour(DateTime);
+        dateTime[5]=getMinute(DateTime);
+        dateTime[6]=getSecond(DateTime);
+        setClock();
     }
 }
