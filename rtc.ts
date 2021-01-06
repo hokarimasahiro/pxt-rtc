@@ -52,6 +52,7 @@ namespace rtc {
     let unixTime=0;     // Unix time
     let startTime=0;
     let orgTime=0;
+    let initFlag=0;
     /**
      * set reg
      */
@@ -91,7 +92,7 @@ namespace rtc {
     //% advanced=true
     export function getDevice(): number {
 
-        if (deviceType==rtcType.NON){
+        if (initFlag==rtcType.NON && initFlag==0){
             for(deviceType=0;deviceType<=6;deviceType++){
                 setDevice(deviceType)
                 getClock();
@@ -99,9 +100,8 @@ namespace rtc {
                     if(dateTime[i]>0) return deviceType;
                 }
             }
-        }else return deviceType;
-
-        startTime = Math.trunc(input.runningTime() / 1000);
+        } else return deviceType;
+        initFlag=1;
         deviceType= rtcType.NON;
         return deviceType;
     }
@@ -200,6 +200,7 @@ namespace rtc {
 
             pins.i2cWriteBuffer(I2C_ADDR, buf)
         } else{
+            startTime = Math.trunc(input.runningTime() / 1000);
             orgTime = convDateTime(dateTime[0], dateTime[1], dateTime[2], dateTime[4], dateTime[5], dateTime[6]);
             unixTime = orgTime;
         }
