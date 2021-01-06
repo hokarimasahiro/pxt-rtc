@@ -258,7 +258,7 @@ namespace rtc {
      * @param dt clockData, eg:clockData.hour
      * @param n data, eg:8
      */
-    //% blockId="setClockData" block="%clockData|%n"
+    //% blockId="setClockData" block="set %clockData to %n"
     export function setClockData(dt: clockData,n:number): void {
         dateTime[dt]=n;
     }
