@@ -42,7 +42,7 @@ enum clockData {
 //% weight=10 color=#800080 icon="\uf017" block="RTC"
 namespace rtc {
 
-    let deviceType = -1;   // none
+    let deviceType = rtcType.NON;   // none
     let I2C_ADDR = 0x68
     let REG_CTRL = 0x0e
     let REG_SECOND = 0x0
@@ -92,7 +92,7 @@ namespace rtc {
     //% advanced=true
     export function getDevice(): number {
 
-        if (initFlag==rtcType.NON && initFlag==0){
+        if (deviceType==rtcType.NON && initFlag==0){
             for(deviceType=0;deviceType<=6;deviceType++){
                 setDevice(deviceType)
                 getClock();
