@@ -255,7 +255,7 @@ namespace rtc {
     }
 
     /**
-     * getClockData
+     * setClockData
      * @param dt clockData
      * @param n data, eg:8
      */
